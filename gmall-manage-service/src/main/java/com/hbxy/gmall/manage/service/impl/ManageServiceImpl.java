@@ -28,6 +28,9 @@ public class ManageServiceImpl implements ManageService {
     @Autowired
     private BaseAttrValueMapper baseAttrValueMapper;
 
+    @Autowired
+    private SpuInfoMapper spuInfoMapper;
+
     @Override
     public List<BaseCatalog1> getCatalog1() {
         return baseCatalog1Mapper.selectAll();
@@ -103,5 +106,13 @@ public class ManageServiceImpl implements ManageService {
         //查询平台属性值集合
         baseAttrInfo.setAttrValueList(getAttrValueList(attrId));
         return baseAttrInfo;
+    }
+
+    @Override
+    public List<SpuInfo> getSpuInfoList(String catalog3Id) {
+        //select * from spu_info where catalog3Id = 62
+        SpuInfo spuInfo = new SpuInfo();
+        spuInfo.setCatalog3Id(catalog3Id);
+        return spuInfoMapper.select(spuInfo);
     }
 }

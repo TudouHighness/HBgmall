@@ -1,4 +1,4 @@
-package com.hbxy.gmall.manage;
+package com.hbxy.gmall.manage.controller;
 
 
 import org.csource.common.MyException;
@@ -6,43 +6,32 @@ import org.csource.fastdfs.ClientGlobal;
 import org.csource.fastdfs.StorageClient;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-//spring boot 2.1.x 以下：@RunWith(SpringRunner.class)
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class GmallManageWebApplicationTests {
+@RestController
+@CrossOrigin
+public class FileUploadController {
 
-    @Test
-    public void contextLoads() {
-
-    }
-
-    @Test
-    public void textFileUpload() throws IOException, MyException {
-        // 项目目录不能有特殊字符
+    //http://localhost:8082/fileUpload  图片上传
+    @RequestMapping("fileUpload")
+    public String fileUpload () throws IOException, MyException {
         String file = this.getClass().getResource("/tracker.conf").getFile();
         ClientGlobal.init(file);
-        TrackerClient trackerClient=new TrackerClient();
-        TrackerServer trackerServer=trackerClient.getConnection();
+        // 创建一个TrackerClient对象。
+        TrackerClient trackerClient = new TrackerClient();
+        // 创建一个TrackerServer对象。
+        TrackerServer trackerServer = trackerClient.getConnection();
         StorageClient storageClient=new StorageClient(trackerServer,null);
         String orginalFilename="C:\\Users\\PotatoHighness\\Desktop\\1.jpg";
         String[] upload_file = storageClient.upload_file(orginalFilename, "jpg", null);
         for (int i = 0; i < upload_file.length; i++) {
             String s = upload_file[i];
             System.out.println("s = " + s);
-			/*
-			s = group1
-			s = M00/00/00/wKhD4l4G-aSAB0dxAACGx2c4tJ4196.jpg
-			 */
         }
+        return "";
     }
-
-
-
 }

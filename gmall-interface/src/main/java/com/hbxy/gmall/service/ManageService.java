@@ -61,4 +61,11 @@ public interface ManageService {
      */
     BaseAttrInfo getBaseAttrInfo(String attrId);
 
+    /**
+     * 通过3级分类Id查询
+     * @param catalog3Id
+     * @return
+     */
+    List<SpuInfo> getSpuInfoList(String catalog3Id);
+
 }
