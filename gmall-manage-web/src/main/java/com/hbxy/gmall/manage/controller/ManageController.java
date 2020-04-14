@@ -64,7 +64,6 @@ public class ManageController {
         //return manageService.getAttrValueList(attrId);
         //业务来讲:先查询baseAttrInfo
         BaseAttrInfo baseAttrInfo = manageService.getBaseAttrInfo(attrId);
-//        if ()
         return baseAttrInfo.getAttrValueList();
 
 
