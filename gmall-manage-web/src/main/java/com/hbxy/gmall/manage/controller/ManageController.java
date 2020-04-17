@@ -43,8 +43,10 @@ public class ManageController {
     //http://localhost:8082/attrInfoList?catalog3Id=61
     //通过三级分类id返回商品
     @RequestMapping("attrInfoList")
-    public List<BaseAttrInfo> attrInfoList(BaseAttrInfo baseAttrInfo){
-        return manageService.getAttrInfoList(baseAttrInfo);
+    @ResponseBody
+    public List<BaseAttrInfo> attrInfoList(String catalog3Id,BaseAttrInfo baseAttrInfo){
+//        return manageService.getAttrInfoList(baseAttrInfo);
+        return manageService.getAttrInfoList(catalog3Id);
     }
 
     //http://localhost:8082/saveAttrInfo
