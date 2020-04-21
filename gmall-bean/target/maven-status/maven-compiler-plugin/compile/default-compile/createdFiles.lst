@@ -1,4 +1,5 @@
 com\hbxy\gmall\bean\SkuImage.class
+com\hbxy\gmall\bean\SkuLsInfo.class
 com\hbxy\gmall\bean\BaseCatalog3.class
 com\hbxy\gmall\bean\UserInfo.class
 com\hbxy\gmall\bean\BaseAttrValue.class
@@ -6,6 +7,7 @@ com\hbxy\gmall\bean\BaseCatalog2.class
 com\hbxy\gmall\bean\SpuSaleAttrValue.class
 com\hbxy\gmall\bean\BaseSaleAttr.class
 com\hbxy\gmall\bean\SkuAttrValue.class
+com\hbxy\gmall\bean\SkuLsAttrValue.class
 com\hbxy\gmall\bean\SpuImage.class
 com\hbxy\gmall\bean\SpuInfo.class
 com\hbxy\gmall\bean\SkuSaleAttrValue.class

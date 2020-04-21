@@ -295,6 +295,12 @@ public class ManageServiceImpl implements ManageService {
                         // 业务逻辑
                         // 缓存中没有数据
                         skuInfo =  getSkuInfoDB(skuId);
+
+                        if (skuInfo==null){
+                            jedis.setex(skuKey,ManageConst.SKUKEY_TIMEOUT,"");
+                        }
+
+
                         // 将数据放入缓存
                         jedis.setex(skuKey,ManageConst.SKUKEY_TIMEOUT, JSON.toJSONString(skuInfo));
                         return skuInfo;
