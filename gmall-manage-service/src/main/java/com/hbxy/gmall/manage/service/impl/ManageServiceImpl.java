@@ -408,4 +408,19 @@ public class ManageServiceImpl implements ManageService {
         List<SkuSaleAttrValue> skuSaleAttrValueList = skuSaleAttrValueMapper.selectSkuSaleAttrValueListBySpu(spuId);
         return skuSaleAttrValueList;
     }
+
+    @Override
+    public List<BaseAttrInfo> getAttrInfoList(List<String> attrValueIdList) {
+        String attrValueIds  = org.apache.commons.lang3.StringUtils.join(attrValueIdList.toArray(), ",");
+        System.out.println(attrValueIds+"传入的字符串");
+        return baseAttrInfoMapper.selectAttrInfoListByIds(attrValueIds);
+    }
+
+    @Override
+    public List<SkuAttrValue> getSkuAttrValueList(String skuId) {
+        SkuAttrValue skuAttrValue = new SkuAttrValue();
+        skuAttrValue.setSkuId(skuId);
+        return skuAttrValueMapper.select(skuAttrValue);
+    }
+
 }

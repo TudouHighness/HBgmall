@@ -1,6 +1,8 @@
 package com.hbxy.gmall.service;
 
 import com.hbxy.gmall.bean.SkuLsInfo;
+import com.hbxy.gmall.bean.SkuLsParams;
+import com.hbxy.gmall.bean.SkuLsResult;
 
 public interface ListService {
 
@@ -9,4 +11,9 @@ public interface ListService {
      * @param skuLsInfo
      */
     public void saveSkuInfo(SkuLsInfo skuLsInfo);
+
+    SkuLsResult search(SkuLsParams skuLsParams);
+
+    public void incrHotScore(String skuId);
+
 }

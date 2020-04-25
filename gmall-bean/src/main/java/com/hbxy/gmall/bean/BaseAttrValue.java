@@ -18,5 +18,8 @@ public class BaseAttrValue implements Serializable {
     @Column
     private String attrId;
 
+    @Transient
+    private String urlParam;
+
 }
 

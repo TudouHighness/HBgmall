@@ -127,4 +127,13 @@ public interface ManageService {
      * @return
      */
     List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId);
+
+    List<BaseAttrInfo> getAttrInfoList(List<String> attrValueIdList);
+
+    /**
+     * 获取SkuAttrValueList
+     * @param skuId
+     * @return
+     */
+    List<SkuAttrValue> getSkuAttrValueList(String skuId);
 }
