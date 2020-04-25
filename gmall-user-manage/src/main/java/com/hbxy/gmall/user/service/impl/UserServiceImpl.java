@@ -94,5 +94,7 @@ public class UserServiceImpl implements UserService {
         Jedis jedis = redisUtil.getJedis();
         jedis.del(redisKey);
         jedis.close();
+
+
     }
 }

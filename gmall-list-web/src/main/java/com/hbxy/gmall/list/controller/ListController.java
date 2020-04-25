@@ -27,7 +27,7 @@ public class ListController {
     private ManageService manageService;
 
     @RequestMapping("list.html")
-    @LoginRequire
+//    @LoginRequire
 //    @ResponseBody
     public String list(SkuLsParams skuLsParams, HttpServletRequest request){
 

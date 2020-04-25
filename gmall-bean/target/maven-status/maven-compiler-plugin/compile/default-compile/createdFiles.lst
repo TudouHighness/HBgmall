@@ -16,5 +16,6 @@ com\hbxy\gmall\bean\SkuSaleAttrValue.class
 com\hbxy\gmall\bean\SpuSaleAttr.class
 com\hbxy\gmall\bean\BaseCatalog1.class
 com\hbxy\gmall\bean\BaseAttrInfo.class
+com\hbxy\gmall\bean\CartInfo.class
 com\hbxy\gmall\bean\UserAddress.class
 com\hbxy\gmall\bean\SkuInfo.class

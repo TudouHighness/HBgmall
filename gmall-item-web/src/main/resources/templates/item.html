@@ -57,16 +57,22 @@
 							</li>
 						</ul>
 						<ul class="header_ul_right">
-							<li style="border: 0;"><a href="http://www.gmall.com/" class="aa"  style="color: black;">
-								<span th:if="${nickName}!=null" th:text="欢迎您+${nickName}">	你好，请登录 </span>
-							</a></li>
-							<li id="signOut" style="border: 0;"><a th:href="'http://passport.hbxy.com/signOut?key='+${userId}" class="aa"  style="color: black;">
-								<span th:if="${nickName}!=null" th:text="退出"> </span>
-							</a></li>
+						<li id="signOut" style="border: 0;"><a th:href="'http://passport.hbxy.com/signOut?key='+${userId}" class="aa"  style="color: black;">
+							<span th:if="${nickName}!=null" th:text="退出"> </span>
+						</a></li>
+					</ul>
+						<ul class="header_ul_right">
+							<li>
+							<span th:if="${nickName}!=null">
+               				 <a href="#" class="aa" th:text="欢迎您+${nickName}"></a>
+							</span>
+							<span th:if="${nickName}==null">
+							<a href="http://passport.hbxy.com/index" class="aa" th:text="登录"></a>
+							</span>
+							</li></ul>
 
-							<li><a href="javascript:;" class="aa">我的订单</a></li>
- 
-						</ul>
+
+
 					</div>
 				</header>
 				<nav>
@@ -253,8 +259,8 @@
 						<div class="box-btns clear">
 							<div class="box-btns-one">
 								<form id="itemForm" action="http://cart.gmall.com/addToCart" method="post">
-								<input type="text" name="num" id="" value="1" />
-								<input type="hidden" name="skuId"   />
+									<input type="text" name="skuNum" id="" value="1" />
+									<input type="hidden" name="skuId" th:value="${skuInfo.id}"  />
 
 								<div class="box-btns-one1">
 

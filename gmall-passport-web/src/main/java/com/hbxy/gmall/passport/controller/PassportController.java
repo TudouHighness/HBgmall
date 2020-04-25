@@ -3,11 +3,11 @@ package com.hbxy.gmall.passport.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 import com.hbxy.gmall.bean.UserInfo;
+import com.hbxy.gmall.config.LoginRequire;
 import com.hbxy.gmall.passport.config.JwtUtil;
 import com.hbxy.gmall.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -28,12 +28,24 @@ public class PassportController {
     // https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F
     // http://localhost:8087/index?originUrl=https%3A%2F%2Fwww.jd.com%2F
     @RequestMapping("index")
+    @LoginRequire(loginMySelf = true)
     public String index(HttpServletRequest request) {
         String originUrl = request.getParameter("originUrl");
+        System.out.println(originUrl);
         // 保存
         request.setAttribute("originUrl", originUrl);
         return "index";
     }
+
+    @RequestMapping("indexMySelf")
+    public String indexMySelf(HttpServletRequest request) {
+        String originUrl = request.getParameter("originUrl");
+        System.out.println(originUrl);
+        // 保存
+        request.setAttribute("originUrl", originUrl);
+        return "index";
+    }
+
 
     // 如何得到表单提交过来的数据
     @RequestMapping("login")
@@ -49,7 +61,6 @@ public class PassportController {
             map.put("nickName",info.getNickName());
             // 服务的Ip 地址 配置nginx 服务器代理
             String salt = request.getHeader("X-forwarded-for");
-//            String salt = "192.168.67.123";
             String token = JwtUtil.encode(key, map, salt);
             System.out.println(token);
             return token;

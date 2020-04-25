@@ -9,5 +9,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LoginRequire {
     // 是否需要登录标识
-    boolean autoRedirect() default true;
+    boolean autoRedirect() default false;
+
+    boolean loginMySelf() default false;
+
 }

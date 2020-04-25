@@ -1,3 +1,4 @@
 com\hbxy\gmall\service\UserService.class
+com\hbxy\gmall\service\CartService.class
 com\hbxy\gmall\service\ListService.class
 com\hbxy\gmall\service\ManageService.class

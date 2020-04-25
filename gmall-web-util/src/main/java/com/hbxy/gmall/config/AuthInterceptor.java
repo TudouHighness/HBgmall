@@ -82,8 +82,19 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
                     return false;
 
                 }
+                if (methodAnnotation.loginMySelf()){
+                    String fromUrl = request.getHeader("referer");
+                    String encodeURL  = URLEncoder.encode(fromUrl, "UTF-8");
+                    // 重定向
+                    response.sendRedirect(WebConst.LOGIN_ADDRESS+"?originUrl="+encodeURL);
+                    // 拦截！
+                    return false;
+                }
+
             }
         }
+
+
 
         return true;
     }
