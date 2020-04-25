@@ -15,7 +15,7 @@
 
 					<div class="min">
 						<ul class="header_ul_left">
-							<li class="glyphicon glyphicon-home"> <a href="shouye.html" class="aa">首页</a></li>
+							<li class="glyphicon glyphicon-home"> <a href="http://www.gmall.com/" class="aa">首页</a></li>
 							<li class="glyphicon glyphicon-map-marker"> <a href="javascript:;">北京</a>
 								<ol id="beijing">
 									<li style="background: red;"><a href="javascript:;" style="color: white;">北京</a></li>
@@ -57,9 +57,14 @@
 							</li>
 						</ul>
 						<ul class="header_ul_right">
-							<li style="border: 0;"><a href="http://passport.atguigu.com/index.html" class="aa" >你好，请登录</a></li>
-							<li><a href="http://passport.atguigu.com/index.html" style="color: red;">免费注册</a> |</li>
-							<li><a href="javascript:;" class="aa">我的订单</a> |</li>
+							<li style="border: 0;"><a href="http://www.gmall.com/" class="aa"  style="color: black;">
+								<span th:if="${nickName}!=null" th:text="欢迎您+${nickName}">	你好，请登录 </span>
+							</a></li>
+							<li id="signOut" style="border: 0;"><a th:href="'http://passport.hbxy.com/signOut?key='+${userId}" class="aa"  style="color: black;">
+								<span th:if="${nickName}!=null" th:text="退出"> </span>
+							</a></li>
+
+							<li><a href="javascript:;" class="aa">我的订单</a></li>
  
 						</ul>
 					</div>
@@ -1000,5 +1005,4 @@
 		    $("#itemForm").submit();
 		}
 	</script>
-
 </html>

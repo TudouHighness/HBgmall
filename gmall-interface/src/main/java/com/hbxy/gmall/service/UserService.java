@@ -19,4 +19,24 @@ public interface UserService {
      * @return
      */
     List<UserAddress> findUserAddressByUserId(String userId);
+
+    /**
+     * 登录
+     * @param userInfo
+     * @return
+     */
+    UserInfo login(UserInfo userInfo);
+
+    /**
+     * 解密token获取用户id
+     * @param userId
+     * @return
+     */
+    UserInfo verfiy(String userId);
+
+    /**
+     * 退出登录
+     * @param key
+     */
+    void signOut(String key);
 }
