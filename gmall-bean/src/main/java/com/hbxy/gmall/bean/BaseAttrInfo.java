@@ -12,7 +12,7 @@ public class BaseAttrInfo implements Serializable {
     @Id
     @Column
     //主键自增
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private String id;
     @Column
     private String attrName;
