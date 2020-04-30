@@ -10,6 +10,7 @@ import com.hbxy.gmall.service.ManageService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -97,5 +98,25 @@ public class CartController {
 
         request.setAttribute("cartInfoList",cartInfoList);
         return "cartList";
+    }
+
+
+    @RequestMapping("checkCart")
+    @ResponseBody
+    @LoginRequire(autoRedirect = false)
+    public void checkCart(HttpServletRequest request){
+        // 登录 ，未登录
+        // 获取用户Id
+        String userId = (String) request.getAttribute("userId"); // 获取作用域中的数据
+        String isChecked = request.getParameter("isChecked");
+        String skuId = request.getParameter("skuId");
+
+        if (userId==null){
+            // 未登录
+            userId = CookieUtil.getCookieValue(request,"user-key",false);
+            // cartService.xxx(skuId,userId,isChecked);
+        }
+        // 登录
+        cartService.checkCart(skuId,userId,isChecked);
     }
 }

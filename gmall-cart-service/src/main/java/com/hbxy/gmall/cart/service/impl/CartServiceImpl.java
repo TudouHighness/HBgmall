@@ -198,6 +198,38 @@ public class CartServiceImpl implements CartService {
         jedis.close();
     }
 
+    @Override
+    public void checkCart(String skuId, String userId, String isChecked) {
+        // 修改：mysql --- redis
+        // 修改mysql，redis
+        // update cartInfo set isChecked = ? where skuId = ? and userId = ?
+
+        // 第一个参数表示修改的内容 第二个参数 example代表查询，更新，删除等的条件
+        CartInfo cartInfo = new CartInfo();
+        cartInfo.setIsChecked(isChecked);
+        Example example = new Example(CartInfo.class);
+        example.createCriteria().andEqualTo("userId",userId).andEqualTo("skuId",skuId);
+        cartInfoMapper.updateByExampleSelective(cartInfo,example);
+
+        // 修改缓存 使用hash！
+        Jedis jedis = redisUtil.getJedis();
+        // key = user:userId:cart  field=skuId  value=cartInfo.toString();
+        String cartKey = CartConst.USER_KEY_PREFIX+userId+CartConst.USER_CART_KEY_SUFFIX;
+
+        // 获取到当前的商品
+        String cartInfoJson = jedis.hget(cartKey, skuId);
+
+        // 转换成对象
+        CartInfo cartInfoUpd = JSON.parseObject(cartInfoJson, CartInfo.class);
+        cartInfoUpd.setIsChecked(isChecked);
+
+        jedis.hset(cartKey,skuId,JSON.toJSONString(cartInfoUpd));
+
+        // 关闭
+        jedis.close();
+
+    }
+
     //根据用户id查询数据库并放入缓存
     private List<CartInfo> loadCartCache(String userId) {
         //查询最新数据给缓存！价格商品

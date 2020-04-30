@@ -34,4 +34,12 @@ public interface CartService {
      * @param userTempId
      */
     void deleteCartList(String userTempId);
+
+    /**
+     *修改购物车zhuangtai
+     * @param skuId
+     * @param userId
+     * @param isCheck
+     */
+    void checkCart(String skuId, String userId, String isCheck);
 }
