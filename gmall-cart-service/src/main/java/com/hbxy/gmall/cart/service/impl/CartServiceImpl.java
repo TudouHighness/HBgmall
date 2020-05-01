@@ -138,7 +138,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartInfo> mergeToCartList(List<CartInfo> cartInfoNoLoginList, String userId) {
+    public List<CartInfo>  mergeToCartList(List<CartInfo> cartInfoNoLoginList, String userId) {
         //定义合并之后的
         List<CartInfo> cartInfoList = new ArrayList<>();
         //登录+未登录
@@ -179,6 +179,23 @@ public class CartServiceImpl implements CartService {
         }
         //汇总
         cartInfoList =loadCartCache(userId);
+        //判断状态  合并购物车
+        if (cartInfoList!=null && cartInfoList.size()>0){
+            for (CartInfo cartInfoLogin : cartInfoList) {
+                for (CartInfo cartInfo : cartInfoNoLoginList) {
+                    // 保存商品相同
+                    if (cartInfo.getSkuId().equals(cartInfoLogin.getSkuId())){
+                        // 判断选择状态 根据未登录
+                        if ("1".equals(cartInfo.getIsChecked())){
+                            // 更改数据库的状态
+                            cartInfoLogin.setIsChecked("1");
+                            // 调用选中的方法
+                            checkCart(cartInfo.getSkuId(),userId,"1");
+                        }
+                    }
+                }
+            }
+        }
         return cartInfoList;
     }
 
@@ -230,8 +247,31 @@ public class CartServiceImpl implements CartService {
 
     }
 
+    @Override
+    public List<CartInfo> getCartCheckedList(String userId) {
+        List<CartInfo> cartInfoList = new ArrayList<>();
+        //直接获取缓存数据
+        //获取redis
+        Jedis jedis = redisUtil.getJedis();
+        //数据类型
+        String cartKey = CartConst.USER_KEY_PREFIX + userId +CartConst.USER_CART_KEY_SUFFIX;
+        //获取所有数据
+        List<String> stringList = jedis.hvals(cartKey);
+        if (stringList!=null && stringList.size()>0){
+            for (String cartInfoJson:stringList){
+            //cartInfoJson转换为cartInfo
+                CartInfo cartInfo = JSON.parseObject(cartInfoJson, CartInfo.class);
+                if ("1".equals(cartInfo.getIsChecked())){
+                    cartInfoList.add(cartInfo);
+                }
+            }
+        }
+        jedis.close();
+        return cartInfoList;
+    }
+
     //根据用户id查询数据库并放入缓存
-    private List<CartInfo> loadCartCache(String userId) {
+    public List<CartInfo> loadCartCache(String userId) {
         //查询最新数据给缓存！价格商品
         List<CartInfo> cartInfoList = cartInfoMapper.selectCartListWithCurPrice(userId);
         if (cartInfoList==null||cartInfoList.size()==0){

@@ -119,4 +119,31 @@ public class CartController {
         // 登录
         cartService.checkCart(skuId,userId,isChecked);
     }
+
+
+    // http://cart.gmall.com/toTrade
+    @RequestMapping("toTrade")
+    @LoginRequire(autoRedirect = true)
+    public String toTrade(HttpServletRequest request){
+
+        //选择状态合并！
+        // 获取用户Id
+        String userId = (String) request.getAttribute("userId"); // 获取作用域中的数据
+        // 先得到未登录的数据
+        // 未登录
+        String userTempId = CookieUtil.getCookieValue(request,"user-key",false);
+        if (!StringUtils.isEmpty(userTempId)){
+            // 获取未登录购物车数据
+            List<CartInfo> cartInfoNoLoginList = cartService.getCartList(userTempId);
+            // 判断集合中是否有数据
+            if (cartInfoNoLoginList!=null && cartInfoNoLoginList.size()>0){
+                // 合并购物车
+                cartService.mergeToCartList(cartInfoNoLoginList,userId);
+                // 删除未登录购物车数据
+                cartService.deleteCartList(userTempId);
+            }
+        }
+        // 重定向到订单
+        return "redirect://trade.gmall.com/trade";
+    }
 }

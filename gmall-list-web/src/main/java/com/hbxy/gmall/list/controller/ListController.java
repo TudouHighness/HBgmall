@@ -31,69 +31,73 @@ public class ListController {
 //    @ResponseBody
     public String list(SkuLsParams skuLsParams, HttpServletRequest request){
 
-        // 每页显示的条数
-        skuLsParams.setPageSize(12);
+        try {
+            // 每页显示的条数
+            skuLsParams.setPageSize(12);
 
-        SkuLsResult skuLsResult = listService.search(skuLsParams);
+            SkuLsResult skuLsResult = listService.search(skuLsParams);
 //        return JSON.toJSONString(skuLsResult);
-        // 获取到所有的商品信息
-        List<SkuLsInfo> skuLsInfoList = skuLsResult.getSkuLsInfoList();
+            // 获取到所有的商品信息
+            List<SkuLsInfo> skuLsInfoList = skuLsResult.getSkuLsInfoList();
 
-        // 显示平台属性，平台属性值：
-        // 必须得到平台属性值Id
-        List<String> attrValueIdList = skuLsResult.getAttrValueIdList();
-        // 根据平台属性值id 查询平台属性集合
-        List<BaseAttrInfo> baseAttrInfoList = manageService.getAttrInfoList(attrValueIdList);
-        // 制作urlParam 参数
-        String urlParam = makeUrlParam(skuLsParams);
+            // 显示平台属性，平台属性值：
+            // 必须得到平台属性值Id
+            List<String> attrValueIdList = skuLsResult.getAttrValueIdList();
+            // 根据平台属性值id 查询平台属性集合
+            List<BaseAttrInfo> baseAttrInfoList = manageService.getAttrInfoList(attrValueIdList);
+            // 制作urlParam 参数
+            String urlParam = makeUrlParam(skuLsParams);
 
-        // 声明一个保存面包屑的集合
-        ArrayList<BaseAttrValue> baseAttrValueArrayList = new ArrayList<>();
-        if (baseAttrInfoList!=null && baseAttrInfoList.size()>0){
-            // itco
-            for (Iterator<BaseAttrInfo> iterator = baseAttrInfoList.iterator(); iterator.hasNext(); ) {
-                BaseAttrInfo baseAttrInfo = iterator.next();
+            // 声明一个保存面包屑的集合
+            ArrayList<BaseAttrValue> baseAttrValueArrayList = new ArrayList<>();
+            if (baseAttrInfoList!=null && baseAttrInfoList.size()>0){
+                // itco
+                for (Iterator<BaseAttrInfo> iterator = baseAttrInfoList.iterator(); iterator.hasNext(); ) {
+                    BaseAttrInfo baseAttrInfo = iterator.next();
 
-                // 获取平台属性值集合
-                List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
-                for (BaseAttrValue baseAttrValue : attrValueList) {
-                    if (skuLsParams.getValueId()!=null && skuLsParams.getValueId().length>0){
-                        for (String valueId : skuLsParams.getValueId()) {
-                            //  http://list.gmall.com/list.html?catalog3Id=61&valueId=83  中的valueId 与 attrValueList 中的平台属性值Id比较
-                            if (baseAttrValue.getId().equals(valueId)){
-                                // 删除baseAttrInfo
-                                iterator.remove();
+                    // 获取平台属性值集合
+                    List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
+                    for (BaseAttrValue baseAttrValue : attrValueList) {
+                        if (skuLsParams.getValueId()!=null && skuLsParams.getValueId().length>0){
+                            for (String valueId : skuLsParams.getValueId()) {
+                                //  http://list.gmall.com/list.html?catalog3Id=61&valueId=83  中的valueId 与 attrValueList 中的平台属性值Id比较
+                                if (baseAttrValue.getId().equals(valueId)){
+                                    // 删除baseAttrInfo
+                                    iterator.remove();
 
-                                // 组装面包屑 平台属性名称：平台属性值名称
-                                // 将面包屑的内容 赋值给了平台属性值对象的名称
-                                BaseAttrValue baseAttrValueed = new BaseAttrValue();
-                                baseAttrValueed.setValueName(baseAttrInfo.getAttrName()+":"+baseAttrValue.getValueName());
+                                    // 组装面包屑 平台属性名称：平台属性值名称
+                                    // 将面包屑的内容 赋值给了平台属性值对象的名称
+                                    BaseAttrValue baseAttrValueed = new BaseAttrValue();
+                                    baseAttrValueed.setValueName(baseAttrInfo.getAttrName()+":"+baseAttrValue.getValueName());
 
-                                String newUrlParam = makeUrlParam(skuLsParams, valueId);
-                                // 赋值最新的参数列表
-                                baseAttrValueed.setUrlParam(newUrlParam);
-                                // 将每个面包屑都放入集合中！
-                                baseAttrValueArrayList.add(baseAttrValueed);
+                                    String newUrlParam = makeUrlParam(skuLsParams, valueId);
+                                    // 赋值最新的参数列表
+                                    baseAttrValueed.setUrlParam(newUrlParam);
+                                    // 将每个面包屑都放入集合中！
+                                    baseAttrValueArrayList.add(baseAttrValueed);
+                                }
                             }
                         }
                     }
                 }
             }
+
+            // 分页：
+            //每页显示的条数
+            request.setAttribute("pageNo",skuLsParams.getPageNo());
+            request.setAttribute("totalPages",skuLsResult.getTotalPages());
+
+            System.out.println("查询的参数列表："+urlParam);
+            // 保存数据
+            request.setAttribute("keyword",skuLsParams.getKeyword());
+            request.setAttribute("baseAttrValueArrayList",baseAttrValueArrayList);
+            request.setAttribute("urlParam",urlParam);
+            request.setAttribute("baseAttrInfoList",baseAttrInfoList);
+            request.setAttribute("skuLsInfoList",skuLsInfoList);
+            return "list";
+        } catch (Exception e) {
+            return "notSearch";
         }
-
-        // 分页：
-        //每页显示的条数
-        request.setAttribute("pageNo",skuLsParams.getPageNo());
-        request.setAttribute("totalPages",skuLsResult.getTotalPages());
-
-        System.out.println("查询的参数列表："+urlParam);
-        // 保存数据
-        request.setAttribute("keyword",skuLsParams.getKeyword());
-        request.setAttribute("baseAttrValueArrayList",baseAttrValueArrayList);
-        request.setAttribute("urlParam",urlParam);
-        request.setAttribute("baseAttrInfoList",baseAttrInfoList);
-        request.setAttribute("skuLsInfoList",skuLsInfoList);
-        return "list";
 
     }
 
@@ -128,7 +132,6 @@ public class ListController {
                 urlParam+="&valueId="+valueId;
             }
         }
-
         return urlParam;
     }
 

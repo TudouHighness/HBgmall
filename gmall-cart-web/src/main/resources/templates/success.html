@@ -26,10 +26,10 @@
         <ul class="hd_wrap_right">
         <li class="forel">
         <a class="link_login" th:if="${nickName}!=null" th:text="欢迎您+${nickName}"></a>&nbsp;
-            <a  href="http://passport.hbxy.com/index" class="link_login" th:if="${nickName}==null" th:text="欢迎您,请登录"></a>&nbsp;
+<!--            <a  href="http://passport.hbxy.com/index" class="link_login" th:if="${nickName}==null" th:text="欢迎您,请登录"></a>&nbsp;-->
         <a th:href="'http://passport.hbxy.com/signOut?key='+${userId}" class="link_regist" th:if="${nickName}!=null" th:text="退出"></a>
         </li>
-        <li class="spacer"></li>
+<!--        <li class="spacer"></li>-->
 
         <li>
         <a href="./javascript:;">我的订单</a>
