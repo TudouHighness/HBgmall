@@ -30,43 +30,43 @@ public class OrderController {
     private ManageService manageService;
 
     //根据用户Id查询收获地址列表
- @RequestMapping("trade")
- @LoginRequire(autoRedirect = true)
+    @RequestMapping("trade")
+    @LoginRequire(autoRedirect = true)
     public String trade(HttpServletRequest request){
-     //获取用户Id
-     String userId = (String) request.getAttribute("userId");
-     List<UserAddress> userAddressesList = userService.findUserAddressByUserId(userId);
+        //获取用户Id
+        String userId = (String) request.getAttribute("userId");
+        List<UserAddress> userAddressesList = userService.findUserAddressByUserId(userId);
 
-     //获取数据库中选中的数据
-     List<CartInfo> cartInfoList = cartService.getCartCheckedList(userId);
+        //获取数据库中选中的数据
+        List<CartInfo> cartInfoList = cartService.getCartCheckedList(userId);
 
-     //存储订单明细
-     ArrayList<OrderDetail> detailArrayList = new ArrayList<>();
+        //存储订单明细
+        ArrayList<OrderDetail> detailArrayList = new ArrayList<>();
 
-     for (CartInfo cartInfo : cartInfoList){
-         OrderDetail orderDetail = new OrderDetail();
-         orderDetail.setSkuId(cartInfo.getSkuId());
-         orderDetail.setSkuName(cartInfo.getSkuName());
-         orderDetail.setImgUrl(cartInfo.getImgUrl());
-         orderDetail.setSkuNum(cartInfo.getSkuNum());
-         orderDetail.setOrderPrice(cartInfo.getCartPrice());
-         //添加订单明细
-         detailArrayList.add(orderDetail);
+        for (CartInfo cartInfo : cartInfoList){
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setSkuId(cartInfo.getSkuId());
+            orderDetail.setSkuName(cartInfo.getSkuName());
+            orderDetail.setImgUrl(cartInfo.getImgUrl());
+            orderDetail.setSkuNum(cartInfo.getSkuNum());
+            orderDetail.setOrderPrice(cartInfo.getCartPrice());
+            //添加订单明细
+            detailArrayList.add(orderDetail);
 
-     }
-     OrderInfo orderInfo = new OrderInfo();
-     orderInfo.setOrderDetailList(detailArrayList);
-     // 计算总金额
-     orderInfo.sumTotalAmount();
-     // 保存数据
-     request.setAttribute("detailArrayList",detailArrayList);
-     request.setAttribute("totalAmount",orderInfo.getTotalAmount());
-     request.setAttribute("userAddressesList",userAddressesList);
+        }
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setOrderDetailList(detailArrayList);
+        // 计算总金额
+        orderInfo.sumTotalAmount();
+        // 保存数据
+        request.setAttribute("detailArrayList",detailArrayList);
+        request.setAttribute("totalAmount",orderInfo.getTotalAmount());
+        request.setAttribute("userAddressesList",userAddressesList);
 
-     //流水号发送前端
-     String tradeNo = orderService.getTradeNo(userId);
-     request.setAttribute("tradeNo",tradeNo);
-     return"trade";
+        //流水号发送前端
+        String tradeNo = orderService.getTradeNo(userId);
+        request.setAttribute("tradeNo",tradeNo);
+        return"trade";
     }
 
 
@@ -122,5 +122,11 @@ public class OrderController {
         String orderId = orderService.saveOrderInfo(orderInfo);
 
      return "redirect://payment.gmall.com/index?orderId="+orderId;
+    }
+
+    //根据用户Id查询收获地址列表
+    @RequestMapping("tradeSuccess")
+    public String tradeSuccess(){
+        return"tradeSuccess";
     }
 }

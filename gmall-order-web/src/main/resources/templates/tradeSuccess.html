@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="utf-8" />
+		<script src="js/jquery-3.1.1.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/JD2.css" />
+
+		<title></title>
+	</head>
+
+	<body>
+		<!--顶部-->
+		<header>
+			<div class="header">
+				<ul class="header-left">
+					<li>
+						<img src="img/header_1.png"/>
+						<a href="">首页</a>
+					</li>
+					<li class="header-l-2">
+						<i class="fa fa-map-marker" style="color: #5C5452;"></i>
+						<a href="">北京</a>
+
+					</li>
+
+				</ul>
+				<ul class="header-right">
+					<li th:text="'你好，'+${nickName}"> </li>
+					<li>|</li>
+					<li class="spacer"></li>
+					<li><a href="">我的订单</a></li>
+					<li class="spacer"></li>
+
+				</ul>
+				<div style="clear: both;"></div>
+			</div>
+
+
+		</header>
+
+		<!--logo图片-->
+		<div class="top-1">
+			<img src="img/logo1.jpg" class="img1"  /><span>下单成功</span>
+
+		</div>
+
+		<!--主体部分-->
+		<div  style="height: 100px;width: 100%;background-color: #A9A9A9;">
+			<a href="http://www.gmall.com/">下单成功:返回首页</a>
+
+		</div>
+
+
+
+		<script>
+            $(function() {
+            });
+
+
+
+		</script>
+	</body>
+
+</html>

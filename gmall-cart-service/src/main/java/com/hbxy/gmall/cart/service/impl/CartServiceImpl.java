@@ -292,6 +292,20 @@ public class CartServiceImpl implements CartService {
         return cartInfoList;
     }
 
+    @Override
+    public void deleteBuyCartList(String userTempId) {
+        //mysql
+        Example example = new Example(CartInfo.class);
+        example.createCriteria().andEqualTo("userId",userTempId).andEqualTo("isChecked",1);
+        cartInfoMapper.deleteByExample(example);
+
+        // 删除缓存
+        Jedis jedis = redisUtil.getJedis();
+        String cartKey = CartConst.USER_KEY_PREFIX+userTempId+CartConst.USER_CART_KEY_SUFFIX;
+        jedis.del(cartKey);
+        jedis.close();
+    }
+
     private void setCartkeyExpire(String userId, Jedis jedis, String cartKey) {
         //设置过期时间
         //获取用户的key

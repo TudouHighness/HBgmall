@@ -56,4 +56,10 @@ public interface CartService {
      * @return
      */
     List<CartInfo> loadCartCache(String userId);
+
+    /**
+     * 删除已买
+     * @param userTempId
+     */
+    void deleteBuyCartList(String userTempId);
 }

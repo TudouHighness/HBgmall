@@ -12,6 +12,7 @@ import com.hbxy.gmall.bean.enums.PaymentStatus;
 import com.hbxy.gmall.config.ActiveMQUtil;
 import com.hbxy.gmall.config.LoginRequire;
 import com.hbxy.gmall.payment.config.AlipayConfig;
+import com.hbxy.gmall.service.CartService;
 import com.hbxy.gmall.service.OrderService;
 import com.hbxy.gmall.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
+
+    @Reference
+    private CartService cartService;
 
     @Autowired
     private AlipayClient alipayClient;
@@ -62,6 +66,9 @@ public class PaymentController {
         // 获取订单Id
         String orderId = request.getParameter("orderId");
         OrderInfo orderInfo = orderService.getOrderInfo(orderId);
+        //删除数据中已下单商品
+        cartService.deleteBuyCartList(orderInfo.getUserId());
+
 
         PaymentInfo paymentInfo = new PaymentInfo();
         paymentInfo.setOrderId(orderId);
@@ -117,6 +124,7 @@ public class PaymentController {
     @RequestMapping("alipay/callback/return")
     public String callBack(){
         // 回调到订单页面
+
         return "redirect:"+AlipayConfig.return_order_url;
     }
 
