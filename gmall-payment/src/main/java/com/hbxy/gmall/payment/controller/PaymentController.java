@@ -9,6 +9,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.hbxy.gmall.bean.OrderInfo;
 import com.hbxy.gmall.bean.PaymentInfo;
 import com.hbxy.gmall.bean.enums.PaymentStatus;
+import com.hbxy.gmall.config.ActiveMQUtil;
 import com.hbxy.gmall.config.LoginRequire;
 import com.hbxy.gmall.payment.config.AlipayConfig;
 import com.hbxy.gmall.service.OrderService;
@@ -151,6 +152,12 @@ public class PaymentController {
                 paymentInfoUpd.setPaymentStatus(PaymentStatus.PAID);
                 paymentInfoUpd.setCallbackTime(new Date());
                 paymentService.updatePaymentInfo(out_trade_no,paymentInfoUpd);
+
+
+                // 发送消息给订单！
+                paymentService.sendPaymentResult(paymentInfoQuery,"success");
+
+
                 return "success";
             }
         }else{
@@ -171,5 +178,12 @@ public class PaymentController {
         return ""+flag;
     }
 
+    // 发送消息告诉订单支付成功！
+    @RequestMapping("sendPaymentResult")
+    @ResponseBody
+    public String sendPaymentResult(PaymentInfo paymentInfo,@RequestParam("result") String result){
+        paymentService.sendPaymentResult(paymentInfo,result);
+        return "sent payment result";
+    }
 
 }

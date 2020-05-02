@@ -120,4 +120,14 @@ public class OrderServiceImpl implements OrderService {
     public OrderInfo getOrderInfo(String orderId) {
         return orderInfoMapper.selectByPrimaryKey(orderId);
     }
+
+    @Override
+    public void updateOrderStatus(String orderId, ProcessStatus processStatus) {
+        // orderId 注解
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setId(orderId);
+        orderInfo.setProcessStatus(processStatus);
+        orderInfo.setOrderStatus(processStatus.getOrderStatus());
+        orderInfoMapper.updateByPrimaryKeySelective(orderInfo);
+    }
 }

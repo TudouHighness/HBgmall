@@ -30,4 +30,11 @@ public interface PaymentService {
      * @return
      */
     boolean refund(String orderId);
+
+    /**
+     * 支付结果
+     * @param paymentInfo
+     * @param result
+     */
+    void sendPaymentResult(PaymentInfo paymentInfo,String result);
 }

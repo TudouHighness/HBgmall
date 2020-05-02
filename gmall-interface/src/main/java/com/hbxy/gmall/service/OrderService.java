@@ -1,6 +1,7 @@
 package com.hbxy.gmall.service;
 
 import com.hbxy.gmall.bean.OrderInfo;
+import com.hbxy.gmall.bean.enums.ProcessStatus;
 
 public interface OrderService {
     /**
@@ -45,4 +46,11 @@ public interface OrderService {
      * @return
      */
     OrderInfo getOrderInfo(String orderId);
+
+    /**
+     * g更新订单状态
+     * @param orderId
+     * @param processStatus
+     */
+    void updateOrderStatus(String orderId, ProcessStatus processStatus);
 }
