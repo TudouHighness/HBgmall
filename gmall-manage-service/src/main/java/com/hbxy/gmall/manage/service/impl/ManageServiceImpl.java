@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Collections;
@@ -115,18 +116,25 @@ public class ManageServiceImpl implements ManageService {
         }
         //保存/修改baseAttrValue
         //修改，先删除原有数据
-        BaseAttrValue baseAttrValueDel = new BaseAttrValue();
-        baseAttrValueDel.setAttrId(baseAttrInfo.getId());
-        baseAttrValueMapper.delete(baseAttrValueDel);
+        if (baseAttrInfo.getId()!=null && baseAttrInfo.getId().length()>0){
+            BaseAttrValue baseAttrValueDel = new BaseAttrValue();
+            baseAttrValueDel.setAttrId(baseAttrInfo.getId());
+            baseAttrValueMapper.delete(baseAttrValueDel);
+        }
 
         //再保存
         List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
+
+        Example example = new Example(BaseSaleAttr.class);
+        example.createCriteria().andEqualTo(baseAttrInfo.getAttrName());
+        List<BaseAttrInfo> baseAttrInfoList = baseAttrInfoMapper.selectByExample(example);
+
         //判断集合是否为空
         //先判断对象不为空，在判断集合长度
         if (attrValueList != null && attrValueList.size()>0){
             for (BaseAttrValue baseAttrValue : attrValueList) {
                 //平台属性值Id主键自增，平台属性Id baseAttrValue.attrId = baseAttrInfo.id
-                baseAttrValue.setAttrId(baseAttrInfo.getId());//获取当前对象主键自增值
+                baseAttrValue.setAttrId(baseAttrInfoList.get(baseAttrInfoList.size()-1).getId());//获取当前对象主键自增值
                 baseAttrValueMapper.insertSelective(baseAttrValue);
             }
         }

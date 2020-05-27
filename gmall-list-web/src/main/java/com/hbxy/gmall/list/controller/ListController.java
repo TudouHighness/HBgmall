@@ -96,6 +96,7 @@ public class ListController {
             request.setAttribute("skuLsInfoList",skuLsInfoList);
             return "list";
         } catch (Exception e) {
+            request.setAttribute("notSearch","很抱歉，没有找到您想要的商品，您可以看看其他商品");
             return "notSearch";
         }
 

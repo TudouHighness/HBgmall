@@ -22,7 +22,7 @@ public class itemController {
     private ManageService manageService;
 
     @RequestMapping("{skuId}.html")
-    @LoginRequire(autoRedirect = false)
+//    @LoginRequire(autoRedirect = false)
     public String item(@PathVariable String skuId, HttpServletRequest request){
         //获取skuId
         System.out.println(skuId);
